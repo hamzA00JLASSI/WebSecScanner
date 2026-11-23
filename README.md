@@ -10,10 +10,15 @@ Scanner de sécurité web en Python. Il analyse un site et génère un score sur
 - Score de sécurité sur 100
 - Rapport HTML avec recommandations de correction
 
+## Prérequis
+
+- Python 3.8 ou plus
+- Git
+
 ## Installation
 
 ```bash
-git clone git@github.com:hamzA00JLASSI/WebSecScanner.git
+git clone https://github.com/hamzA00JLASSI/WebSecScanner.git
 cd WebSecScanner
 python3 -m venv venv
 source venv/bin/activate
@@ -35,6 +40,27 @@ python main.py http://localhost:8080 --ports
 | `--ports` | Active le scan de ports (cibles autorisées uniquement) |
 | `--output FICHIER` | Génère un rapport HTML |
 
+### Exemple de sortie
+
+```
+Analyse de https://example.com
+
+--- En-têtes HTTP ---
+❌ Content-Security-Policy: Protège contre le XSS
+❌ Strict-Transport-Security: Force l'utilisation de HTTPS
+❌ X-Frame-Options: Protège contre le clickjacking
+❌ X-Content-Type-Options: Empêche le MIME sniffing
+
+--- Certificat SSL ---
+✅ Certificat valide, expire le 2026-12-25 (82 jours)
+
+Score : 25/100
+```
+
+## Générer un PDF
+
+L'outil produit un rapport HTML. Pour l'obtenir en PDF, ouvrez-le dans un navigateur, puis `Ctrl+P` → « Enregistrer au format PDF » (cochez « Imprimer les arrière-plans » pour garder les couleurs).
+
 ## Barème du score
 
 | Test | Points |
@@ -46,21 +72,27 @@ python main.py http://localhost:8080 --ports
 ## Structure
 
 ```
-main.py            point d'entrée (arguments, affichage)
-scanner/headers.py en-têtes HTTP
-scanner/ssl_check.py certificat SSL
-scanner/ports.py   scan de ports
-scanner/report.py  score et rapport HTML
+main.py                point d'entrée (arguments, affichage)
+scanner/headers.py     en-têtes HTTP
+scanner/ssl_check.py   certificat SSL
+scanner/ports.py       scan de ports
+scanner/report.py      score et rapport HTML
 ```
 
 ## Avertissement légal
 
-Utilisez cet outil uniquement sur des systèmes dont vous êtes propriétaire ou pour lesquels vous avez une autorisation écrite. Le scan de ports ou les tests de sécurité sans autorisation peuvent être illégaux.
+Cet outil est destiné à un usage éducatif et défensif.
 
-Cibles de test légales : `localhost`, `expired.badssl.com`, `scanme.nmap.org` (avec modération).
+- **Analyse passive** (en-têtes HTTP, certificat SSL) : elle envoie une requête comme un navigateur, mais respectez les conditions d'utilisation du site et ne lancez pas l'outil en boucle.
+- **Scan de ports** (`--ports`) : uniquement sur des systèmes dont vous êtes propriétaire ou pour lesquels vous avez une **autorisation écrite**. Sans autorisation, c'est potentiellement illégal.
+
+Cibles de test recommandées : `localhost`, `example.com`, `expired.badssl.com`, et `scanme.nmap.org` (avec modération, scan de ports autorisé par ses propriétaires).
+
+L'auteur décline toute responsabilité en cas d'usage non autorisé.
 
 ## Pistes d'amélioration
 
+- Option `--pdf` pour exporter directement le rapport en PDF
 - Scan de ports en parallèle
-- Export PDF du rapport
 - Détection de la version du serveur
+- Tests automatiques avec pytest
