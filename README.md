@@ -1,6 +1,6 @@
 # WebSecScanner
 
-Scanner de sécurité web en Python. Il analyse un site et génère un score sur 100 avec un rapport HTML et des recommandations.
+Scanne de sécurité web en Python. Il analyse un site et génère un score sur 100 avec un rapport HTML et des recommandations.
 
 ## Fonctionnalités
 
